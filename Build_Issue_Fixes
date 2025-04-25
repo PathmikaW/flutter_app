@@ -1,0 +1,76 @@
+notification.dart
+
+// Before (❌ Deprecated)
+var iosSettings = IOSInitializationSettings();
+
+// ✅ After
+var iosSettings = DarwinInitializationSettings();
+
+
+// Before (❌ Deprecated)
+var iosDetails = IOSNotificationDetails();
+
+// ✅ After
+var iosDetails = DarwinNotificationDetails();
+
+
+
+🔄 Fix zonedSchedule() Call
+
+await _notificationsPlugin.zonedSchedule(
+      0,
+      'Reminder',
+      'This is your scheduled notification!',
+      tz.TZDateTime.from(scheduledDateTime, tz.local),
+      platformDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      // uiTimezone: tz.local.name, // ✅ NEW: Required if you want time zone awareness
+      matchDateTimeComponents: null, // Optional
+    );
+
+
+PS D:\Temp\Flutter\flutter_app\redback-smartbike-mobile-main\app> flutter run
+Launching lib\main.dart on sdk gphone64 x86 64 in debug mode...
+Warning: Flutter support for your project's Android Gradle Plugin version (7.3.0) will soon be dropped. Please upgrade your Android Gradle Plugin version to a version of at least 7.3.1 soon.
+Alternatively, use the flag "--android-skip-build-dependency-validation" to bypass this check.
+
+Potential fix: Your project's AGP version is typically defined in the plugins block of the `settings.gradle` file (D:\Temp\Flutter\flutter_app\redback-smartbike-mobile-main\app\android/settings.gradle), by a plugin with the id of com.android.application.
+If you don't see a plugins block, your project was likely created with an older template version. In this case it is most likely defined in the top-level build.gradle file (D:\Temp\Flutter\flutter_app\redback-smartbike-mobile-main\app\android/build.gradle) by the following line in the dependencies block of the buildscript: "classpath 'com.android.tools.build:gradle:<version>'".
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:processDebugResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
+   > Android resource linking failed
+     aapt2.exe E 04-25 10:16:45   396  4092 LoadedArsc.cpp:94] RES_TABLE_TYPE_TYPE entry offsets overlap actual entry data.
+     aapt2.exe E 04-25 10:16:45   396  4092 ApkAssets.cpp:149] Failed to load resources table in APK 'C:\Users\Pathmika\AppData\Local\Android\Sdk\platforms\android-35\android.jar'.
+     error: failed to load include path C:\Users\Pathmika\AppData\Local\Android\Sdk\platforms\android-35\android.jar.
+
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 1m 17s
+Running Gradle task 'assembleDebug'...                             78.8s
+
+┌─ Flutter Fix ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ [!] Using compileSdk 35 requires Android Gradle Plugin (AGP) 8.1.0 or higher.                                                         │
+│  Please upgrade to a newer AGP version. The version of AGP that your project uses is likely defined in:                               │
+│ D:\Temp\Flutter\flutter_app\redback-smartbike-mobile-main\app\android\settings.gradle,                                                │
+│ in the 'plugins' closure (by the number following "com.android.application").                                                         │
+│  Alternatively, if your project was created with an older version of the templates, it is likely                                      │
+│ in the buildscript.dependencies closure of the top-level build.gradle:                                                                │
+│ D:\Temp\Flutter\flutter_app\redback-smartbike-mobile-main\app\android\build.gradle,                                                   │
+│ as the number following "com.android.tools.build:gradle:".                                                                            │
+│                                                                                                                                       │
+│  Finally, if you have a strong reason to avoid upgrading AGP, you can temporarily lower the compileSdk version in the following file: │
+│ D:\Temp\Flutter\flutter_app\redback-smartbike-mobile-main\app\android\app\build.gradle                                                │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+Error: Gradle task assembleDebug failed with exit code 1
+
